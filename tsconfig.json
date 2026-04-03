@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "app/components/registration/StepProvider.jsx"
   ],
   "exclude": ["node_modules"]
 }
