@@ -3,9 +3,9 @@
 import { useContext } from "react";
 import { SignUpContext } from "@/app/context/SignUpContext";
 
-import Input from "./Input";
-import PasswordInput from "./PasswordInput";
-import AvatarUpload from "./AvatarUpload";
+import Input from "../shared/Input";
+import PasswordInput from "../shared/PasswordInput";
+import AvatarUpload from "../shared/AvatarUpload";
 
 function StepOne() {
   return <Input label="Email*" placeholder="you@example.com" type="email" />;

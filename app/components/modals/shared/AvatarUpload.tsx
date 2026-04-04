@@ -14,7 +14,10 @@ export default function AvatarUpload() {
 
         <div className="flex flex-col items-center gap-[6px]">
           <p className="text-[14px] font-medium text-[#666666] text-center">
-            Drag and drop or Upload file
+            Drag and drop or{" "}
+            <span className="cursor-pointer text-[blue] underline">
+              Upload file
+            </span>
           </p>
           <p className="text-[12px] text-[#ADADAD] text-center">
             JPG, PNG or WebP

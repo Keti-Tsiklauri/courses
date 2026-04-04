@@ -1,4 +1,14 @@
-export default function RegistrationFooter() {
+type Props = {
+  normalText: string;
+  linkText: string;
+  onClick?: () => void; // optional click handler for the link
+};
+
+export default function RegistrationFooter({
+  normalText,
+  linkText,
+  onClick,
+}: Props) {
   return (
     <div className="flex flex-col justify-center items-center gap-2 w-[360px] h-[46px]">
       {/* Horizontal line */}
@@ -15,10 +25,13 @@ export default function RegistrationFooter() {
       {/* Footer Text */}
       <div className="flex flex-row justify-center items-end w-[360px] gap-2 px-[60px]">
         <p className="text-[12px] leading-[15px] text-[#666666] text-center">
-          Dont have an account?
+          {normalText}
         </p>
-        <p className="text-[14px] leading-[17px] font-inter font-medium text-[#141414] underline cursor-pointer">
-          Log In
+        <p
+          className="text-[14px] leading-[17px] font-inter font-medium text-[#141414] underline cursor-pointer"
+          onClick={onClick}
+        >
+          {linkText}
         </p>
       </div>
     </div>
