@@ -4,7 +4,7 @@ import Header from "./Header";
 import ProgressBar from "./ProgressBar";
 import RegistrationFooter from "./RegistrationFooter";
 import NextButton from "./NextButton";
-import StepInput from "./StepInput";
+import StepInput from "./Steps";
 import ModalHeader from "./ModalHeader";
 
 import { SignUpProvider } from "../../context/SignUpContext";
