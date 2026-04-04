@@ -22,7 +22,7 @@ export default function ModalHeader() {
             <Image
               src="/images/arrow-left.svg"
               alt="Back"
-              width={16} // keep original SVG size
+              width={16}
               height={16}
               className="cursor-pointer"
             />

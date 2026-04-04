@@ -1,41 +1,52 @@
 "use client";
-import { SignUpContext } from "@/app/context/SignUpContext";
+
 import { useContext } from "react";
+import { SignUpContext } from "@/app/context/SignUpContext";
+
 import Input from "./Input";
 import PasswordInput from "./PasswordInput";
 import AvatarUpload from "./AvatarUpload";
+
+function StepOne() {
+  return <Input label="Email*" placeholder="you@example.com" type="email" />;
+}
+
+function StepTwo() {
+  return (
+    <div className="flex flex-col gap-[24px]">
+      <PasswordInput label="Password*" placeholder="Password" />
+      <PasswordInput
+        label="Confirm Password*"
+        placeholder="Repeat your password"
+      />
+    </div>
+  );
+}
+
+function StepThree() {
+  return (
+    <div className="flex flex-col gap-[24px]">
+      <Input label="UserName*" placeholder="Username" type="text" />
+      <AvatarUpload />
+    </div>
+  );
+}
 
 export default function Steps() {
   const context = useContext(SignUpContext);
 
   if (!context) {
-    throw new Error("NextButton must be used within a SignUpProvider");
+    throw new Error("Steps must be used within SignUpProvider");
   }
 
-  const { step, setStep } = context;
-  return (
-    <div>
-      {step === 1 && (
-        <div>
-          <Input label="Email*" placeholder="you@example.com" type="email" />
-        </div>
-      )}
-      {step === 2 && (
-        <div className="flex flex-col gap-[24px]">
-          <PasswordInput label="Password*" placeholder="Password" />
+  type Step = 1 | 2 | 3;
 
-          <PasswordInput
-            label="Confirm Password*"
-            placeholder="Repeat your password"
-          />
-        </div>
-      )}
-      {step === 3 && (
-        <div className="flex flex-col gap-[24px]">
-          <Input label="UserName*" placeholder="Username" type="text" />
-          <AvatarUpload />
-        </div>
-      )}
-    </div>
-  );
+  const { step } = context as { step: Step };
+  const stepsMap: Record<number, React.ReactNode> = {
+    1: <StepOne />,
+    2: <StepTwo />,
+    3: <StepThree />,
+  };
+
+  return <div className="w-[360px]">{stepsMap[step] || null}</div>;
 }

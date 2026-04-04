@@ -15,9 +15,9 @@ export default function NextButton() {
   return (
     <button
       onClick={() => setStep(step + 1)}
-      className="w-[360px] h-[47px] flex justify-center items-center gap-[10px] bg-[#4F46E5] rounded-[8px]"
+      className="w-[360px] h-[47px] flex justify-center items-center gap-[10px] bg-[#4F46E5] rounded-[8px] cursor-pointer"
     >
-      <span className="font-inter font-medium text-[16px] leading-[24px] text-white text-center cursor-pointer">
+      <span className="font-inter font-medium text-[16px] leading-[24px] text-white text-center ">
         Next
       </span>
     </button>
