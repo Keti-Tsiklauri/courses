@@ -20,13 +20,18 @@ export default function Steps() {
         </div>
       )}
       {step === 2 && (
-        <div>
+        <div className="flex  flex-col gap-4">
           <PasswordInput label="Password*" placeholder="Password" />
 
           <PasswordInput
             label="Confirm Password*"
             placeholder="Repeat your password"
           />
+        </div>
+      )}
+      {step === 3 && (
+        <div>
+          <Input label="UserName*" placeholder="Username" type="text" />
         </div>
       )}
     </div>
