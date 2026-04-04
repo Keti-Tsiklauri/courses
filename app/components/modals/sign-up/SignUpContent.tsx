@@ -4,11 +4,11 @@ import Header from "./Header";
 import ProgressBar from "./ProgressBar";
 import RegistrationFooter from "../shared/RegistrationFooter";
 
-import StepInput from "./Steps";
 import ModalHeader from "../shared/ModalHeader";
 import { useContext } from "react";
 import { SignUpContext } from "@/app/context/SignUpContext";
 import Button from "../shared/Button";
+import Steps from "./Steps";
 export default function SignUpContent() {
   const context = useContext(SignUpContext);
 
@@ -18,11 +18,11 @@ export default function SignUpContent() {
   const { step, setStep } = context;
 
   return (
-    <div className="absolute w-[460px] left-[725px] top-[301.5px] bg-white rounded-[12px] flex flex-col justify-start items-center pt-5 pb-10 gap-[12px] isolate">
-      <ModalHeader />
+    <div className="absolute shadow-sm w-[460px] left-[725px] top-[301.5px] bg-white rounded-[12px] flex flex-col justify-start items-center pt-5 pb-10 gap-[12px] isolate">
+      <ModalHeader showBack={true} />
       <Header title="Create Account" subtitle="Join and start learning today" />
       <ProgressBar />
-      <StepInput />
+      <Steps />
       <Button text="Next" onClick={() => setStep(step + 1)} />
       <RegistrationFooter
         normalText="Already have an account? "

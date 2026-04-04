@@ -4,21 +4,33 @@ import Image from "next/image";
 import { SignUpContext } from "@/app/context/SignUpContext";
 import { useContext } from "react";
 
-export default function ModalHeader() {
+interface ModalHeaderProps {
+  showBack?: boolean; // whether to show the back button
+  onBack?: () => void; // function to run on back click
+  onClose?: () => void; // function to run on close click
+}
+
+export default function ModalHeader({
+  showBack = false,
+  onBack,
+  onClose,
+}: ModalHeaderProps) {
   const context = useContext(SignUpContext);
 
-  if (!context) {
-    throw new Error("ModalHeader must be used within a SignUpProvider");
-  }
-
-  const { step, setStep } = context;
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else if (context && context.step > 1) {
+      context.setStep((prev) => prev - 1);
+    }
+  };
 
   return (
     <div className="flex justify-between items-center w-[420px] bg-white">
-      {/* Back button container */}
+      {/* Back button */}
       <div className="w-[24px] h-[24px] flex items-center justify-center">
-        {step > 1 && (
-          <button onClick={() => setStep((prev) => prev - 1)}>
+        {showBack && (
+          <button onClick={handleBack}>
             <Image
               src="/images/arrow-left.svg"
               alt="Back"
@@ -30,9 +42,9 @@ export default function ModalHeader() {
         )}
       </div>
 
-      {/* Close button container */}
+      {/* Close button */}
       <div className="w-[24px] h-[24px] flex items-center justify-center">
-        <button>
+        <button onClick={onClose}>
           <Image
             src="/images/close-icon.svg"
             alt="Close"

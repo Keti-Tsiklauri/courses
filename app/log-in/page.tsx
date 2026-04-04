@@ -1,3 +1,9 @@
+import LogInContent from "../components/modals/log-in/LogInContent";
+
 export default function LogIn() {
-  return <div>login</div>;
+  return (
+    <div>
+      <LogInContent />
+    </div>
+  );
 }
