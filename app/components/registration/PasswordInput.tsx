@@ -20,7 +20,7 @@ export default function PasswordInput({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex flex-col w-[360px] gap-[2px]">
+    <div className="flex flex-col w-[360px] gap-[12px]">
       {/* Label */}
       <label className="text-[14px] leading-[17px] font-inter font-medium text-[#3D3D3D]">
         {label}

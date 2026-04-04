@@ -3,6 +3,7 @@ import { SignUpContext } from "@/app/context/SignUpContext";
 import { useContext } from "react";
 import Input from "./Input";
 import PasswordInput from "./PasswordInput";
+import AvatarUpload from "./AvatarUpload";
 
 export default function Steps() {
   const context = useContext(SignUpContext);
@@ -20,7 +21,7 @@ export default function Steps() {
         </div>
       )}
       {step === 2 && (
-        <div className="flex  flex-col gap-4">
+        <div className="flex flex-col gap-[24px]">
           <PasswordInput label="Password*" placeholder="Password" />
 
           <PasswordInput
@@ -30,8 +31,9 @@ export default function Steps() {
         </div>
       )}
       {step === 3 && (
-        <div>
+        <div className="flex flex-col gap-[24px]">
           <Input label="UserName*" placeholder="Username" type="text" />
+          <AvatarUpload />
         </div>
       )}
     </div>
