@@ -19,7 +19,7 @@ export default function LogInContent() {
         {/* password */}
         <PasswordInput label="Password" placeholder="Password" />
       </div>
-      <Button text="Next" />
+      <Button text="Next" width="360px" height="47px" />
       <RegistrationFooter
         normalText="Don’t have an account?"
         linkText="Sign Up"

@@ -23,7 +23,12 @@ export default function SignUpContent() {
       <Header title="Create Account" subtitle="Join and start learning today" />
       <ProgressBar />
       <Steps />
-      <Button text="Next" onClick={() => setStep(step + 1)} />
+      <Button
+        text="Next"
+        onClick={() => setStep(step + 1)}
+        width="360px"
+        height="47px"
+      />
       <RegistrationFooter
         normalText="Already have an account? "
         linkText="Log In"

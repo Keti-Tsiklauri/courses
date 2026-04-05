@@ -55,7 +55,7 @@ export default function Profile() {
         />
       </div>
       <AvatarUpload />
-      <Button text="Update Profile" />
+      <Button text="Update Profile" width="360px" height="47px" />
     </div>
   );
 }
