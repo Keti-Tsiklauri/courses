@@ -36,7 +36,7 @@ export default function Instructors() {
       </h2>
 
       {/* List */}
-      <div className="flex flex-col gap-3 w-full">
+      <div className="flex flex-col  w-full">
         {instructors.map((inst) => (
           <div
             key={inst.id}
