@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-interface Topic {
-  id: number;
-  name: string;
-}
-
+import { Topic } from "@/app/types/types";
 export default function Topics() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
