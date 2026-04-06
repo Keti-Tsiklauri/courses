@@ -40,3 +40,7 @@ export interface Category {
   name: string;
 }
 const getImageName = (name: string) => name.toLowerCase().replace(/\s+/g, "-");
+interface Topic {
+  id: number;
+  name: string;
+}
