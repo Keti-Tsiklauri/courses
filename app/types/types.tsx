@@ -35,3 +35,8 @@ export interface CoursesResponse {
     total: number;
   };
 }
+export interface Category {
+  id: number;
+  name: string;
+}
+const getImageName = (name: string) => name.toLowerCase().replace(/\s+/g, "-");
