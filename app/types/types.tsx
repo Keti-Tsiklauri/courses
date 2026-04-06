@@ -3,11 +3,12 @@ export interface Course {
   title: string;
   description: string;
   image: string;
-  basePrice: string;
+  basePrice: number;
   durationWeeks: number;
   isFeatured: boolean;
   avgRating: number | null;
   reviewCount: number;
+  createdAt?: string;
 
   category: {
     id: number;
