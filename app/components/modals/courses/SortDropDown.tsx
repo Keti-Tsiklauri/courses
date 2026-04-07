@@ -2,18 +2,22 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useFilter } from "@/app/context/FilterContext";
 
 const options = [
-  "Newest First",
-  "Price: Low to High",
-  "Price: High to Low",
-  "Most Popular",
-  "Title: A-Z",
+  { label: "Newest First", value: "newest" },
+  { label: "Price: Low to High", value: "priceLow" },
+  { label: "Price: High to Low", value: "priceHigh" },
+  { label: "Most Popular", value: "popular" },
+  { label: "Title: A-Z", value: "title" },
 ];
 
 export default function SortDropdownUI() {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(options[0]);
+  const { sortOption, setSortOption } = useFilter();
+
+  const selectedLabel =
+    options.find((opt) => opt.value === sortOption)?.label || options[0].label;
 
   return (
     <div className="relative w-[234px]">
@@ -26,8 +30,8 @@ export default function SortDropdownUI() {
           <span className="text-[16px] text-gray-500 font-medium shrink-0">
             Sort By:
           </span>
-          <span className="text-[16px] font-medium text-[#4F46E5] truncate overflow-hidden text-ellipsis">
-            {selected}
+          <span className="text-[16px] font-medium text-[#4F46E5] truncate">
+            {selectedLabel}
           </span>
         </div>
 
@@ -45,16 +49,20 @@ export default function SortDropdownUI() {
         <div className="absolute top-[55px] left-0 w-full bg-white border border-gray-100 rounded-[10px] z-10">
           {options.map((opt) => (
             <div
-              key={opt}
+              key={opt.value}
               onClick={() => {
-                setSelected(opt);
+                setSortOption(opt.value); // ✅ THIS IS THE IMPORTANT PART
                 setOpen(false);
               }}
               className={`px-5 py-2 cursor-pointer rounded-[10px] transition
-                ${selected === opt ? "bg-[#DDDBFA] text-[#4F46E5]" : "text-gray-500 hover:bg-gray-50"}
+                ${
+                  sortOption === opt.value
+                    ? "bg-[#DDDBFA] text-[#4F46E5]"
+                    : "text-gray-500 hover:bg-gray-50"
+                }
               `}
             >
-              {opt}
+              {opt.label}
             </div>
           ))}
         </div>

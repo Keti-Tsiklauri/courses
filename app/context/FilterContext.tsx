@@ -119,6 +119,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let temp = [...courses];
 
+    // ✅ Filters
     if (selectedCategories.length > 0)
       temp = temp.filter((c) => selectedCategories.includes(c.category.id));
 
@@ -128,12 +129,35 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     if (selectedInstructors.length > 0)
       temp = temp.filter((c) => selectedInstructors.includes(c.instructor.id));
 
+    // ✅ Sorting
+    if (sortOption === "priceLow") {
+      temp.sort((a, b) => a.basePrice - b.basePrice);
+    }
+
+    if (sortOption === "priceHigh") {
+      temp.sort((a, b) => b.basePrice - a.basePrice);
+    }
+
+    if (sortOption === "title") {
+      temp.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    if (sortOption === "newest") {
+      // keep original API order
+      temp = [...temp];
+    }
+
+    if (sortOption === "popular") {
+      // no data → fallback (same as newest)
+      temp = [...temp];
+    }
+
     setFilteredCourses(temp);
   }, [
     selectedCategories,
     selectedTopics,
     selectedInstructors,
-    sortOption,
+    sortOption, // ✅ now actually used
     courses,
   ]);
 
