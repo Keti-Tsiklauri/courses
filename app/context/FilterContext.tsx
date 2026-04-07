@@ -1,6 +1,4 @@
-// app/context/FilterContext.tsx
 "use client";
-
 import {
   createContext,
   useContext,
@@ -25,6 +23,11 @@ interface FilterContextType {
   setSelectedTopics: (ids: number[]) => void;
   setSortOption: (option: string) => void;
   filteredInstructors: Instructor[];
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  totalPages: number;
+  totalCourses: number;
+  itemsPerPage: number;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -43,122 +46,79 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const [filteredInstructors, setFilteredInstructors] = useState<Instructor[]>(
     [],
   );
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalCourses, setTotalCourses] = useState<number>(0);
 
-  // Fetch all data
+  const itemsPerPage = 10; // match API perPage
+
+  // Fetch categories, instructors, topics once
   useEffect(() => {
     async function fetchData() {
       try {
-        const [courseRes, catRes, instRes, topicRes] = await Promise.all([
-          fetch("https://api.redclass.redberryinternship.ge/api/courses"),
+        const [catRes, instRes, topicRes] = await Promise.all([
           fetch("https://api.redclass.redberryinternship.ge/api/categories"),
           fetch("https://api.redclass.redberryinternship.ge/api/instructors"),
           fetch("https://api.redclass.redberryinternship.ge/api/topics"),
         ]);
-
-        const coursesData = await courseRes.json();
         const categoriesData = await catRes.json();
         const instructorsData = await instRes.json();
         const topicsData = await topicRes.json();
 
-        setCourses(coursesData.data);
-        setFilteredCourses(coursesData.data);
         setCategories(categoriesData.data);
         setInstructors(instructorsData.data);
         setTopics(topicsData.data);
-        setFilteredInstructors(instructorsData.data); // initially show all instructors
+        setFilteredInstructors(instructorsData.data); // initially show all
       } catch (err) {
         console.error(err);
       }
     }
-
     fetchData();
   }, []);
 
+  // Fetch courses whenever filters, sort, or page change
   useEffect(() => {
-    let temp: Instructor[] = [...instructors];
+    async function fetchCourses() {
+      try {
+        // Build query parameters
+        const params = new URLSearchParams();
+        params.append("sort", sortOption);
+        params.append("page", currentPage.toString());
+        if (selectedCategories.length > 0)
+          params.append("categories", selectedCategories.join(","));
+        if (selectedTopics.length > 0)
+          params.append("topics", selectedTopics.join(","));
+        if (selectedInstructors.length > 0)
+          params.append("instructors", selectedInstructors.join(","));
 
-    // Filter by selected categories
-    if (selectedCategories.length > 0) {
-      const courseInstructorIds = courses
-        .filter((c) => selectedCategories.includes(c.category.id))
-        .map((c) => c.instructor.id);
+        const res = await fetch(
+          `https://api.redclass.redberryinternship.ge/api/courses?${params.toString()}`,
+        );
+        const data = await res.json();
 
-      temp = temp.filter((inst) => courseInstructorIds.includes(inst.id));
+        setCourses(data.data ?? []);
+        setFilteredCourses(data.data ?? []);
+
+        // Safe access with fallback
+        setTotalPages(data.meta?.lastPage ?? 1);
+        setTotalCourses(data.meta?.total ?? data.data?.length ?? 0);
+      } catch (err) {
+        console.error(err);
+        // fallback in case of fetch error
+        setCourses([]);
+        setFilteredCourses([]);
+        setTotalPages(1);
+        setTotalCourses(0);
+      }
     }
 
-    // Filter by selected topics
-    if (selectedTopics.length > 0) {
-      const courseInstructorIds = courses
-        .filter((c) => selectedTopics.includes(c.topic.id))
-        .map((c) => c.instructor.id);
-
-      temp = temp.filter((inst) => courseInstructorIds.includes(inst.id));
-    }
-
-    // Reset to all instructors if no filters are applied
-    if (selectedCategories.length === 0 && selectedTopics.length === 0) {
-      temp = [...instructors];
-    }
-
-    // Compare outside before setting
-    const prevIds = filteredInstructors
-      .map((i) => i.id)
-      .sort()
-      .join(",");
-    const newIds = temp
-      .map((i) => i.id)
-      .sort()
-      .join(",");
-
-    if (prevIds !== newIds) {
-      setFilteredInstructors(temp);
-    }
-  }, [selectedCategories, selectedTopics, instructors, courses]);
-
-  // Filter courses based on selected categories, topics, instructors
-  useEffect(() => {
-    let temp = [...courses];
-
-    // ✅ Filters
-    if (selectedCategories.length > 0)
-      temp = temp.filter((c) => selectedCategories.includes(c.category.id));
-
-    if (selectedTopics.length > 0)
-      temp = temp.filter((c) => selectedTopics.includes(c.topic.id));
-
-    if (selectedInstructors.length > 0)
-      temp = temp.filter((c) => selectedInstructors.includes(c.instructor.id));
-
-    // ✅ Sorting
-    if (sortOption === "priceLow") {
-      temp.sort((a, b) => a.basePrice - b.basePrice);
-    }
-
-    if (sortOption === "priceHigh") {
-      temp.sort((a, b) => b.basePrice - a.basePrice);
-    }
-
-    if (sortOption === "title") {
-      temp.sort((a, b) => a.title.localeCompare(b.title));
-    }
-
-    if (sortOption === "newest") {
-      // keep original API order
-      temp = [...temp];
-    }
-
-    if (sortOption === "popular") {
-      // no data → fallback (same as newest)
-      temp = [...temp];
-    }
-
-    setFilteredCourses(temp);
+    fetchCourses();
   }, [
     selectedCategories,
     selectedTopics,
     selectedInstructors,
-    sortOption, // ✅ now actually used
-    courses,
+    sortOption,
+    currentPage,
   ]);
 
   return (
@@ -178,6 +138,11 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         setSelectedTopics,
         setSortOption,
         filteredInstructors,
+        currentPage,
+        setCurrentPage,
+        itemsPerPage,
+        totalPages,
+        totalCourses,
       }}
     >
       {children}
