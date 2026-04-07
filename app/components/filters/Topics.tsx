@@ -12,7 +12,6 @@ export default function Topics() {
     courses,
   } = useFilter();
 
-  // ✅ derive instead of state
   const displayTopics =
     selectedCategories.length > 0
       ? Array.from(
@@ -48,14 +47,21 @@ export default function Topics() {
             <div
               key={topic.id}
               onClick={() => toggleTopic(topic.id)}
-              className={`flex items-center justify-center px-3 py-2 border rounded-[12px] cursor-pointer transition
+              className={`group flex items-center justify-center px-3 py-2 border rounded-[12px] cursor-pointer transition
                 ${
                   isActive
-                    ? "bg-[#EEF2FF] border-[#4F46E5]"
-                    : "bg-white border-gray-200 hover:bg-gray-50"
+                    ? "bg-[#EEEDFC] border-[#281ED2]"
+                    : "bg-white border-gray-200 hover:bg-[#DDDBFA]"
                 }`}
             >
-              <span className="font-inter font-medium text-[16px] text-[#666666]">
+              <span
+                className={`font-inter font-medium text-[16px] transition
+                  ${
+                    isActive
+                      ? "text-[#281ED2]"
+                      : "text-[#666666] group-hover:text-[#281ED2]"
+                  }`}
+              >
                 {topic.name}
               </span>
             </div>
