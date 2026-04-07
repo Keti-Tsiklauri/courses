@@ -5,12 +5,12 @@ import Image from "next/image";
 import { useFilter } from "@/app/context/FilterContext";
 
 export default function Instructors() {
-  const [loading, setLoading] = useState(true);
-
-  const { filteredInstructors, selectedInstructors, setSelectedInstructors } =
-    useFilter();
-
-  if (loading) return <p>Loading instructors...</p>;
+  const {
+    filteredInstructors,
+    selectedInstructors,
+    setSelectedInstructors,
+    instructors,
+  } = useFilter();
 
   return (
     <div className="flex flex-col items-start gap-6 w-[309px] bg-[#F5F5F5]">
