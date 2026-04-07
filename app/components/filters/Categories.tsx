@@ -29,10 +29,8 @@ export default function Categories() {
 
   const toggleCategory = (id: number) => {
     if (selectedCategories.includes(id)) {
-      // remove if already selected
       setSelectedCategories(selectedCategories.filter((catId) => catId !== id));
     } else {
-      // add to selected
       setSelectedCategories([...selectedCategories, id]);
     }
   };
@@ -46,20 +44,59 @@ export default function Categories() {
       <div className="flex flex-wrap gap-2 w-full">
         {categories.map((cat) => {
           const isActive = selectedCategories.includes(cat.id);
+          const baseName = getImageName(cat.name);
+
           return (
             <div
               key={cat.id}
               onClick={() => toggleCategory(cat.id)}
-              className={`flex items-center gap-2.5 px-3 py-2 border rounded-[12px] cursor-pointer transition
-                ${isActive ? "bg-[#EEF2FF] border-[#4F46E5]" : "bg-white border-gray-200 hover:bg-gray-50"}`}
+              className={`
+                group flex items-center justify-center gap-[10px]
+                px-[12px] py-[8px] rounded-[12px] cursor-pointer transition-all
+                
+                ${
+                  isActive
+                    ? "bg-[#EEEDFC] border border-[#281ED2]"
+                    : "bg-white border border-gray-200 hover:bg-[#DDDBFA]"
+                }
+              `}
             >
-              <Image
-                src={`/categories-images/${getImageName(cat.name)}.svg`}
-                alt={cat.name}
-                width={24}
-                height={24}
-              />
-              <span className="font-inter font-medium text-[16px] text-[#666666]">
+              {/* ICON */}
+              <div className="relative w-[24px] h-[24px]">
+                {/* Default icon */}
+                <Image
+                  src={`/categories-images/${baseName}.svg`}
+                  alt={cat.name}
+                  fill
+                  className={`
+      object-contain transition
+      ${isActive ? "hidden" : "block group-hover:hidden"}
+    `}
+                />
+
+                {/* Purple icon (hover + active) */}
+                <Image
+                  src={`/categories-images/${baseName}-purple.svg`}
+                  alt={cat.name}
+                  fill
+                  className={`
+      object-contain transition
+      ${isActive ? "block" : "hidden group-hover:block"}
+    `}
+                />
+              </div>
+
+              {/* TEXT */}
+              <span
+                className={`
+                  font-inter font-medium text-[16px] leading-[24px] text-center transition
+                  ${
+                    isActive
+                      ? "text-[#281ED2]"
+                      : "text-[#666666] group-hover:text-[#281ED2]"
+                  }
+                `}
+              >
                 {cat.name}
               </span>
             </div>
